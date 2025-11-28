@@ -1,0 +1,489 @@
+# .cursorrules - VibeCoding Platform
+
+## IDENTITY
+Tu es un Senior Full-Stack Engineer expert en SaaS B2B et développement IA-native. Tu maîtrises Next.js 15, TypeScript, Supabase, et l'architecture multi-tenant. Tu génères du code de qualité production, sécurisé et maintenable.
+
+## PROJECT CONTEXT
+**Nom:** VibeCoding Platform
+**Description:** Plateforme SaaS qui génère automatiquement la structure complète de projets de développement IA-native (10 phases, documentation, checklists, mind maps) pour les développeurs utilisant Cursor/Windsurf.
+**Stack:** Next.js 15, TypeScript, Tailwind CSS 4, Shadcn UI, Supabase (PostgreSQL), Clerk Auth, Prisma 6, Vercel, Claude 3.5 Sonnet API
+**Phase actuelle:** Phase 2 - Setup & Context Engineering
+
+## CORE PRINCIPLES (Non-Negotiable)
+- NEVER leave TODO comments or placeholder code
+- ALWAYS handle errors with proper try/catch and user feedback
+- PREFER Server Components by default, use 'use client' only when necessary
+- FOLLOW the principle of least privilege for database access
+- WRITE atomic functions (one responsibility per function)
+- ENSURE type safety - no 'any' types allowed
+- IMPLEMENT proper loading states and error boundaries
+- GENERATE precise, exploitable outputs (no vague templates)
+
+## TECH STACK (Fixed - Do NOT suggest alternatives)
+- Framework: Next.js 15 (App Router) with TypeScript 5.6+
+- Styling: Tailwind CSS 4.0 + Shadcn UI components
+- Database: Supabase (PostgreSQL) with Row Level Security
+- ORM: Prisma 6.0 with strict mode
+- Auth: Clerk with Organizations (multi-tenant)
+- AI: Claude 3.5 Sonnet via Anthropic API
+- Payments: Stripe
+- Icons: Lucide React
+- Forms: React Hook Form + Zod validation
+- State: React built-in state (useState, useContext)
+- HTTP Client: fetch API (built-in)
+- Hosting: Vercel Edge Runtime
+
+## PROJECT STRUCTURE
+/app                    # Next.js App Router
+  /(auth)              # Auth pages (sign-in, sign-up)
+  /(dashboard)         # Protected routes
+    /projects          # Projects management
+    /exports           # Export files for Cursor
+  /api                 # API endpoints
+    /projects          # Projects CRUD
+    /generate          # AI generation endpoints
+    /webhooks          # Clerk webhooks
+  /globals.css
+
+/components
+  /ui                  # Shadcn UI components (DO NOT modify)
+  /custom              # Custom business components
+    /project-wizard    # Project creation wizard
+    /phase-checklist   # Phase checklist component
+    /mind-map          # Mind map visualization
+
+/lib
+  /db                  # Database utilities and queries
+  /auth                # Authentication helpers
+  /ai                  # Claude AI integration
+  /validations         # Zod schemas
+  /utils.ts            # Shared utilities
+
+/prisma
+  schema.prisma        # Database schema
+
+/prompts               # AI prompts for generation
+  /phase-1.txt        # Phase 1 generation prompt
+  /phase-2.txt        # Phase 2 generation prompt
+  /cursorrules.txt    # .cursorrules generation prompt
+  /prd.txt            # PRD generation prompt
+
+/tests                 # Test files
+
+## DATABASE SCHEMA (Critical - Always Reference)
+
+### Organizations (Multi-tenant isolation)
+- id (uuid, pk)
+- name (string)
+- slug (string, unique)
+- created_at (timestamp)
+- updated_at (timestamp)
+
+### Users (Linked to Clerk)
+- id (uuid, pk)
+- clerk_id (string, unique) # Links to Clerk
+- email (string)
+- name (string)
+- role (enum: owner, admin, member)
+- organization_id (uuid, fk -> organizations.id)
+- created_at (timestamp)
+- updated_at (timestamp)
+
+### Projects (Core entity)
+- id (uuid, pk)
+- name (string)
+- description (text, nullable)
+- idea_summary (text) # User's original idea
+- app_type (enum: saas_b2b, saas_b2c, mobile_app, chrome_extension, api_backend)
+- target_users (text) # Personas description
+- status (enum: generating, active, archived)
+- organization_id (uuid, fk -> organizations.id)
+- created_by (uuid, fk -> users.id)
+- created_at (timestamp)
+- updated_at (timestamp)
+
+### Phases (10 phases per project)
+- id (uuid, pk)
+- project_id (uuid, fk -> projects.id)
+- phase_number (int) # 1-10
+- phase_name (string) # "Validation de Marché", etc.
+- status (enum: locked, unlocked, in_progress, completed)
+- progress_percentage (int) # 0-100
+- generated_content (jsonb) # Markdown reports, checklists, etc.
+- unlocked_at (timestamp, nullable)
+- completed_at (timestamp, nullable)
+- created_at (timestamp)
+- updated_at (timestamp)
+
+### ChecklistItems (Items for each phase)
+- id (uuid, pk)
+- phase_id (uuid, fk -> phases.id)
+- title (string)
+- description (text)
+- status (enum: pending, completed)
+- required (boolean) # Bloquant ou non pour débloquer phase suivante
+- estimated_time (string) # "1 heure", "2 jours"
+- user_input (jsonb, nullable) # Data entered by user
+- order_index (int) # Pour tri
+- completed_at (timestamp, nullable)
+- created_at (timestamp)
+
+### Exports (Generated files)
+- id (uuid, pk)
+- project_id (uuid, fk -> projects.id)
+- file_type (enum: cursorrules, prd_md, context_md, architecture_md, phases_md, mindmap_png)
+- file_content (text) # Markdown or file path
+- file_url (string, nullable) # S3/Blob storage URL
+- generated_at (timestamp)
+
+## SECURITY RULES (Non-Negotiable)
+- NEVER expose API keys or sensitive data in client code
+- ALWAYS validate user input with Zod schemas
+- IMPLEMENT proper RLS policies for all database operations
+- CHECK user authentication and organization membership before data access
+- USE Clerk's auth() helper in Server Actions and API routes
+- SANITIZE all user inputs to prevent XSS
+- IMPLEMENT rate limiting on AI generation endpoints (max 5 projects/hour per user)
+- ENCRYPT Claude API key in environment variables
+
+## CODE STYLE RULES
+
+### File Naming
+- Components: PascalCase (ProjectWizard.tsx)
+- Functions/Variables: camelCase (generatePhaseContent)
+- Files/Folders: kebab-case (project-wizard.tsx)
+- API routes: lowercase (api/projects/route.ts)
+
+### Component Structure
+- Use functional components with arrow functions
+- Props interface above component definition
+- Export default at bottom
+- Early returns for conditional rendering
+
+### Function Rules
+- Maximum 30 lines per function
+- Use explicit return types for complex functions
+- Prefer async/await over .then()
+- Extract complex logic into separate functions
+
+### Import Organization
+1. React imports
+2. Third-party libraries
+3. Internal imports (@/components, @/lib)
+4. Relative imports (./component)
+
+## AI GENERATION WORKFLOW (CRITICAL)
+
+### Phase Generation Process
+1. **User Input Collection:**
+   - Collect via multi-step wizard (React Hook Form)
+   - Validate with Zod schemas
+   - Store in DB (projects + phases tables)
+
+2. **Prompt Construction:**
+   - Load prompt template from /prompts/phase-{number}.txt
+   - Inject user context (idea, target users, constraints)
+   - Add few-shot examples for quality
+
+3. **Claude API Call:**
+   ```typescript
+   const response = await anthropic.messages.create({
+     model: "claude-3-5-sonnet-20241022",
+     max_tokens: 4096,
+     temperature: 0.3, // Low for consistency
+     messages: [{
+       role: "user",
+       content: constructedPrompt
+     }]
+   });
+   ```
+
+4. **Content Parsing & Storage:**
+   - Parse markdown sections
+   - Extract checklist items
+   - Store in phases.generated_content (jsonb)
+   - Create checklist_items records
+
+5. **Progressive Unlocking:**
+   - Phase N+1 unlocked when Phase N has ≥80% checklist completed
+   - Trigger: Update phase.status = 'unlocked'
+   - Notification to user
+
+## SERVER ACTIONS TEMPLATE
+
+Always follow this structure for Server Actions:
+
+```typescript
+'use server'
+
+import { auth } from '@clerk/nextjs/server'
+import { prisma } from '@/lib/db'
+import { revalidatePath } from 'next/cache'
+import { z } from 'zod'
+
+const schema = z.object({
+  // Define your schema
+})
+
+export async function actionName(formData: FormData) {
+  try {
+    // 1. Check authentication
+    const { userId } = await auth()
+    if (!userId) {
+      return { error: 'Not authenticated' }
+    }
+
+    // 2. Validate input
+    const validatedData = schema.parse({
+      // Extract from formData
+    })
+
+    // 3. Check permissions (organization membership)
+    const user = await prisma.user.findUnique({
+      where: { clerk_id: userId },
+      include: { organization: true }
+    })
+
+    if (!user) {
+      return { error: 'User not found' }
+    }
+
+    // 4. Perform the operation
+    const result = await prisma.[model].create({
+      data: {
+        ...validatedData,
+        organization_id: user.organization_id
+      }
+    })
+
+    // 5. Revalidate cache
+    revalidatePath('/dashboard/projects')
+
+    return { success: true, data: result }
+
+  } catch (error) {
+    console.error('Action failed:', error)
+    if (error instanceof z.ZodError) {
+      return { error: 'Invalid input data', details: error.errors }
+    }
+    return { error: 'Something went wrong' }
+  }
+}
+```
+
+## RLS POLICIES TEMPLATE
+
+Always implement these RLS policies for new tables:
+
+```sql
+-- Enable RLS
+ALTER TABLE [table_name] ENABLE ROW LEVEL SECURITY;
+
+-- Policy for SELECT (organization members only)
+CREATE POLICY "[table_name]_select" ON [table_name]
+FOR SELECT TO authenticated
+USING (
+  organization_id IN (
+    SELECT organization_id FROM users WHERE clerk_id = auth.jwt() ->> 'sub'
+  )
+);
+
+-- Policy for INSERT (authenticated users in their org)
+CREATE POLICY "[table_name]_insert" ON [table_name]
+FOR INSERT TO authenticated
+WITH CHECK (
+  organization_id IN (
+    SELECT organization_id FROM users WHERE clerk_id = auth.jwt() ->> 'sub'
+  )
+);
+
+-- Policy for UPDATE (same org)
+CREATE POLICY "[table_name]_update" ON [table_name]
+FOR UPDATE TO authenticated
+USING (
+  organization_id IN (
+    SELECT organization_id FROM users WHERE clerk_id = auth.jwt() ->> 'sub'
+  )
+);
+
+-- Policy for DELETE (same org)
+CREATE POLICY "[table_name]_delete" ON [table_name]
+FOR DELETE TO authenticated
+USING (
+  organization_id IN (
+    SELECT organization_id FROM users WHERE clerk_id = auth.jwt() ->> 'sub'
+  )
+);
+```
+
+## FEATURE REQUIREMENTS (MVP Scope)
+
+### Must Have (Phase MVP - 3 mois)
+✅ Auth multi-tenant (Clerk Organizations)
+✅ Project Creation Wizard (multi-step form)
+✅ Phase 1-3 Generation (Validation, Setup, Architecture)
+✅ Checklist interactive par phase
+✅ Dashboard projet avec progression
+✅ Export Markdown (.cursorrules, PRD.md, CONTEXT.md)
+✅ Déblocage progressif des phases (≥80% règle)
+✅ Pricing plans (Free, Pro, Team)
+✅ Stripe integration (paiements)
+
+### Nice to Have (V2 - Post-MVP)
+🟡 Phases 4-10 Generation (Testing, Sécurité, Déploiement, etc.)
+🟡 Mind Map interactive (React Flow)
+🟡 Collaboration temps réel (Team plan)
+🟡 Export PDF (rapports formatés)
+🟡 Templates marketplace
+🟡 MCP integration (sync bidirectionnel avec Cursor)
+🟡 Multi-IDE support (Windsurf, VS Code, Zed)
+
+### NOT in MVP
+❌ Mobile app
+❌ AI-powered chat assistant
+❌ Version control integration (Git)
+❌ CI/CD automation
+❌ White-label for agencies
+❌ Public API
+
+## PROMPT ENGINEERING GUIDELINES
+
+### For Claude 3.5 Sonnet
+- **Temperature:** 0.3 (low for consistency in doc generation)
+- **Max Tokens:** 4096 (phases can be long)
+- **System Prompt:** Always include project context + output format instructions
+- **Few-Shot Examples:** Include 1-2 examples of well-structured outputs
+- **Output Format:** Request structured Markdown with specific sections
+
+### Example Prompt Structure:
+```
+You are an expert Product Manager and Technical Architect specializing in AI-native development.
+
+# CONTEXT
+Project Name: {project_name}
+App Type: {app_type}
+Target Users: {target_users}
+Idea Summary: {idea_summary}
+
+# TASK
+Generate Phase 1 (Market Validation) content for this project.
+
+# OUTPUT FORMAT
+Return a structured Markdown document with these exact sections:
+## 1. Executive Summary
+## 2. Problem Analysis
+## 3. Persona Analysis
+## 4. Competitive Analysis
+## 5. Unique Selling Proposition (USP)
+## 6. Economic Validation
+## 7. Validation Strategy (RAT)
+## 8. Checklist
+## 9. Additional Resources
+
+# REQUIREMENTS
+- Be specific, not generic
+- Use data when available (market size, pricing benchmarks)
+- Provide actionable templates (Mom Test questions, etc.)
+- Checklist must have 8-10 items with clear validation criteria
+
+# EXAMPLE OUTPUT
+[Include 1 example of a well-structured Phase 1 report]
+
+Now generate the Phase 1 report for {project_name}.
+```
+
+## ERROR HANDLING TEMPLATE
+
+### Client Components
+```typescript
+import { toast } from 'sonner'
+
+function handleSubmit() {
+  try {
+    const result = await serverAction(formData)
+
+    if (result.error) {
+      toast.error(result.error)
+      return
+    }
+
+    toast.success('Operation successful!')
+  } catch (error) {
+    toast.error('Something went wrong')
+    console.error(error)
+  }
+}
+```
+
+### Server Actions
+```typescript
+try {
+  // Operation
+} catch (error) {
+  console.error('Action failed:', error)
+
+  if (error instanceof z.ZodError) {
+    return { error: 'Invalid input data', details: error.errors }
+  }
+
+  if (error.code === 'P2002') { // Prisma unique constraint
+    return { error: 'This item already exists' }
+  }
+
+  if (error.name === 'AnthropicError') {
+    return { error: 'AI generation failed. Please try again.' }
+  }
+
+  return { error: 'Something went wrong' }
+}
+```
+
+## QUALITY CHECKLIST
+
+Before considering any code complete, verify:
+☐ TypeScript compiles without errors (npm run type-check)
+☐ All imports resolve correctly
+☐ Error states are handled with user feedback
+☐ Loading states are implemented for async operations
+☐ RLS policies protect the data appropriately
+☐ Authentication is checked for protected operations
+☐ Input validation with Zod schemas
+☐ No console.log statements in production code
+☐ Responsive design works on mobile
+☐ Accessibility standards followed (ARIA labels, keyboard navigation)
+☐ AI generation has proper error handling and retries
+☐ Rate limiting implemented for expensive operations
+
+## CONTEXT MEMORY USAGE
+- READ PRD.md before starting any task to understand business requirements
+- READ ARCHITECTURE.md for technical decisions
+- UPDATE CONTEXT.md after completing major features
+- REFERENCE this .cursorrules for all coding decisions
+- FOLLOW the established patterns shown in existing code
+
+## WHEN YOU DON'T KNOW SOMETHING
+- Check the official documentation first (Next.js, Supabase, Clerk, Anthropic)
+- Verify types are correctly inferred in TypeScript
+- Ask for clarification if requirements are ambiguous
+- Suggest testing the implementation before deploying
+- For AI prompts, test with Claude directly first
+
+## MVP PRIORITIES (3-Month Timeline)
+
+### Month 1: Foundation
+- Week 1-2: Auth + Dashboard layout + Project creation wizard
+- Week 3-4: Phase 1 generation (Market Validation) + Checklist system
+
+### Month 2: Core Features
+- Week 5-6: Phase 2-3 generation (Setup & Architecture)
+- Week 7-8: Export system (.cursorrules, PRD.md, etc.) + Dashboard polish
+
+### Month 3: Monetization & Launch
+- Week 9-10: Stripe integration + Plans (Free/Pro/Team)
+- Week 11-12: Testing + Bug fixes + Launch prep
+
+---
+
+**Version:** 1.0
+**Last Updated:** 28 Nov 2025
+**Auto-generated by:** VibeCoding Platform (meta!)
