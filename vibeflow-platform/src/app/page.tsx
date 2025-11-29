@@ -23,7 +23,7 @@ export default async function Home() {
             La Colonne Vertébrale du Développement IA-Native
           </p>
           <p className="mx-auto max-w-3xl text-lg text-muted-foreground">
-            Transformez votre idée d'app en projet Cursor structuré complet en 15 minutes.
+            Transformez votre idée d&apos;app en projet Cursor structuré complet en 15 minutes.
             Génération automatique de documentation, architecture, et méthodologie complète.
           </p>
         </div>

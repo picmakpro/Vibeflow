@@ -1,6 +1,6 @@
 // src/lib/inngest/client.ts
 // VF-023 : Configuration du client Inngest
-// Sprint 1 - Foundation & Wizard
+// Sprint 1 - Foundation & Wizard (corrigé Sprint 2)
 
 import { Inngest } from 'inngest'
 
@@ -18,10 +18,17 @@ import { Inngest } from 'inngest'
 export const inngest = new Inngest({
   id: 'vibeflow',
   name: 'VibeFlow Platform',
-  // En dev, pas besoin de clé API si le Dev Server tourne
-  ...(process.env.NODE_ENV === 'development' && !process.env.INNGEST_EVENT_KEY
-    ? { isDev: true }
-    : {}),
+  // Configuration pour le mode développement
+  ...(process.env.NODE_ENV === 'development'
+    ? {
+        // En dev, utiliser le Dev Server local
+        eventKey: process.env.INNGEST_EVENT_KEY || 'local-dev-key',
+      }
+    : {
+        // En production, utiliser les clés Inngest Cloud
+        eventKey: process.env.INNGEST_EVENT_KEY,
+        signingKey: process.env.INNGEST_SIGNING_KEY,
+      }),
 })
 
 // ============================================

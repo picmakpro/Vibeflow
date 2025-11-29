@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db/prisma'
 import { triggerPhaseGeneration } from '@/lib/inngest/client'
+import { Prisma } from '@prisma/client'
 
 export async function POST(request: NextRequest) {
   try {
@@ -82,7 +83,7 @@ export async function POST(request: NextRequest) {
     await prisma.phase.updateMany({
       where: { projectId },
       data: {
-        generatedContent: null,
+        generatedContent: Prisma.JsonNull,
         progressPercentage: 0,
         status: 'LOCKED',
         completedAt: null,
@@ -125,7 +126,7 @@ export async function POST(request: NextRequest) {
 }
 
 // GET pour faciliter les tests
-export async function GET(request: NextRequest) {
+export async function GET() {
   return NextResponse.json({
     message: 'Utilisez POST /api/admin/regenerate?projectId=xxx pour relancer la génération',
     example: 'curl -X POST http://localhost:3000/api/admin/regenerate?projectId=f7f7f92f-731c-4fc6-984d-77dd2ac01fb4',

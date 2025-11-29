@@ -1,0 +1,9 @@
+{
+  "$schema": "https://inngest.com/schemas/v0/inngest.json",
+  "name": "vibeflow",
+  "scan": {
+    "typescript": true,
+    "paths": ["./src/lib/inngest"]
+  }
+}
+

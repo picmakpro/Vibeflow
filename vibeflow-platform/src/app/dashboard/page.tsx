@@ -65,7 +65,7 @@ export default async function DashboardPage() {
               </h2>
               <p className="text-muted-foreground max-w-xl">
                 En quelques minutes, VibeFlow génère automatiquement la validation de marché, 
-                l'architecture technique et la documentation complète pour votre projet Cursor.
+                l&apos;architecture technique et la documentation complète pour votre projet Cursor.
               </p>
               <Button asChild size="lg" className="mt-4">
                 <Link href="/dashboard/projects/new" className="flex items-center gap-2">
@@ -238,11 +238,11 @@ export default async function DashboardPage() {
             </div>
             <div className="flex items-center gap-3 text-sm">
               <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-              <span>CONTEXT.md pour votre équipe et l'IA</span>
+              <span>CONTEXT.md pour votre équipe et l&apos;IA</span>
             </div>
             <div className="flex items-center gap-3 text-sm">
               <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
-              <span>Premier Prompt Cursor prêt à l'emploi</span>
+              <span>Premier Prompt Cursor prêt à l&apos;emploi</span>
             </div>
           </CardContent>
         </Card>

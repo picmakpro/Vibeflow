@@ -9,7 +9,7 @@ import { prisma } from '@/lib/db/prisma'
 import { revalidatePath } from 'next/cache'
 import { createProjectSchema, CreateProjectData, PHASE_NAMES } from '@/lib/validations/project'
 import { triggerPhaseGeneration } from '@/lib/inngest'
-import type { Project, Phase } from '@prisma/client'
+import type { Project, Phase, ChecklistItem } from '@prisma/client'
 
 // ============================================
 // TYPES
@@ -214,7 +214,7 @@ export async function getProjects(): Promise<ActionResponse<ProjectWithPhases[]>
  */
 export async function getProject(
   projectId: string
-): Promise<ActionResponse<Project & { phases: (Phase & { checklistItems: unknown[] })[] }>> {
+): Promise<ActionResponse<Project & { phases: (Phase & { checklistItems: ChecklistItem[] })[] }>> {
   try {
     // 1. Vérifier l'authentification
     const { userId } = await auth()

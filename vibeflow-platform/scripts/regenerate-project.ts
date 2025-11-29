@@ -2,7 +2,7 @@
 // Script pour relancer la génération d'un projet
 // Usage: npx tsx scripts/regenerate-project.ts <projectId>
 
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -39,7 +39,7 @@ async function main() {
   await prisma.phase.updateMany({
     where: { projectId: PROJECT_ID },
     data: {
-      generatedContent: null,
+      generatedContent: Prisma.JsonNull,
       progressPercentage: 0,
       status: 'LOCKED',
       completedAt: null,

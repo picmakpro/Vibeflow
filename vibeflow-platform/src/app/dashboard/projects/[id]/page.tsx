@@ -20,9 +20,14 @@ import {
   Loader2,
   Sparkles,
   Target,
-  Code,
-  Rocket
+  Code
 } from 'lucide-react'
+import type { Phase, ChecklistItem } from '@prisma/client'
+
+// Types locaux
+interface PhaseWithChecklistItems extends Phase {
+  checklistItems: ChecklistItem[]
+}
 
 interface ProjectPageProps {
   params: Promise<{ id: string }>
@@ -215,7 +220,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 }
 
 // Composant pour les cartes de phase (vue grille)
-function PhaseCard({ phase, projectId }: { phase: any; projectId: string }) {
+function PhaseCard({ phase, projectId }: { phase: PhaseWithChecklistItems; projectId: string }) {
   const isLocked = phase.status === 'LOCKED'
   const isGenerating = phase.status === 'UNLOCKED' && !phase.generatedContent
   const hasContent = !!phase.generatedContent
@@ -290,10 +295,10 @@ function PhaseCard({ phase, projectId }: { phase: any; projectId: string }) {
 }
 
 // Composant pour les cartes de phase détaillées (vue liste)
-function PhaseDetailCard({ phase, projectId }: { phase: any; projectId: string }) {
+function PhaseDetailCard({ phase, projectId }: { phase: PhaseWithChecklistItems; projectId: string }) {
   const isLocked = phase.status === 'LOCKED'
   const checklistItems = phase.checklistItems || []
-  const completedItems = checklistItems.filter((i: any) => i.status === 'COMPLETED').length
+  const completedItems = checklistItems.filter((i: ChecklistItem) => i.status === 'COMPLETED').length
 
   return (
     <Card className={isLocked ? 'opacity-60' : ''}>
@@ -335,7 +340,7 @@ function PhaseDetailCard({ phase, projectId }: { phase: any; projectId: string }
       {checklistItems.length > 0 && (
         <CardContent>
           <div className="space-y-2">
-            {checklistItems.slice(0, 5).map((item: any) => (
+            {checklistItems.slice(0, 5).map((item: ChecklistItem) => (
               <div key={item.id} className="flex items-center gap-2 text-sm">
                 {item.status === 'COMPLETED' ? (
                   <CheckCircle2 className="h-4 w-4 text-emerald-500" />
