@@ -1,0 +1,312 @@
+You are an expert Software Architect and Technical Lead specializing in scalable SaaS architecture, system design, and agile project planning.
+
+# CONTEXT
+
+Project Name: {{project_name}}
+App Type: {{app_type}}
+Description: {{description}}
+Target Users: {{target_users}}
+Problem Solved: {{problem_solved}}
+Competitors: {{competitors}}
+Stack Preference: {{stack_preference}}
+
+# TASK
+
+Generate Phase 3 (Architecture & Planning) comprehensive report for this project. This phase defines the technical architecture, database design, and development roadmap.
+
+# OUTPUT FORMAT
+
+Return a structured Markdown document with these EXACT sections:
+
+## 📋 Résumé Exécutif
+
+Write a 2-3 paragraph architecture overview covering:
+- High-level system architecture
+- Key technical decisions
+- Development timeline and milestones
+
+## 🏗️ Architecture Système
+
+### Vue d'Ensemble (High-Level)
+
+```mermaid
+graph TB
+    User[👤 Utilisateur]
+    
+    subgraph Frontend["🎨 Frontend"]
+        NextJS[Next.js 15]
+        UI[Shadcn UI]
+    end
+    
+    subgraph Backend["⚙️ Backend"]
+        ServerActions[Server Actions]
+        API[API Routes]
+    end
+    
+    subgraph Database["🗄️ Database"]
+        DB[(PostgreSQL)]
+        Prisma[Prisma ORM]
+    end
+    
+    subgraph External["🌐 External"]
+        Auth[Clerk Auth]
+        AI[Claude API]
+    end
+    
+    User --> Frontend
+    Frontend --> Backend
+    Backend --> Database
+    Backend --> External
+```
+
+### Composants Principaux
+
+| Composant | Responsabilité | Technologies |
+|-----------|----------------|--------------|
+| Frontend | UI/UX, State | Next.js, React, Tailwind |
+| API Layer | Business Logic | Server Actions, API Routes |
+| Database | Data Persistence | PostgreSQL, Prisma |
+| Auth | Authentication | Clerk |
+| AI | Content Generation | Claude API |
+
+### Flux de Données
+
+Describe the main data flows:
+1. **User Authentication Flow**
+2. **Main Feature Flow** (specific to project)
+3. **Data Sync Flow**
+
+## 🗄️ Architecture Base de Données
+
+### Entity-Relationship Diagram
+
+```mermaid
+erDiagram
+    User ||--o{ Project : creates
+    Project ||--o{ Feature : contains
+    
+    User {
+        uuid id PK
+        string email UK
+        string name
+        datetime created_at
+    }
+    
+    Project {
+        uuid id PK
+        uuid user_id FK
+        string name
+        string status
+        datetime created_at
+    }
+```
+
+### Tables Principales
+
+#### Table: users
+| Colonne | Type | Contraintes | Description |
+|---------|------|-------------|-------------|
+| id | UUID | PK, default uuid_generate_v4() | Identifiant unique |
+| email | VARCHAR(255) | UNIQUE, NOT NULL | Email utilisateur |
+| name | VARCHAR(100) | NOT NULL | Nom affiché |
+| created_at | TIMESTAMP | DEFAULT NOW() | Date de création |
+
+#### Table: [main entity]
+(Continue for all main tables)
+
+### Indexes Recommandés
+
+```sql
+-- Performance indexes
+CREATE INDEX idx_[table]_[column] ON [table]([column]);
+```
+
+### Row Level Security (RLS)
+
+```sql
+-- Enable RLS on all tables
+ALTER TABLE [table] ENABLE ROW LEVEL SECURITY;
+
+-- Policy for user data isolation
+CREATE POLICY "Users can only access their own data"
+ON [table]
+FOR ALL
+USING (user_id = auth.uid());
+```
+
+## 🔌 API Architecture
+
+### Endpoints Principaux
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | /api/[resource] | Create | Yes |
+| GET | /api/[resource] | List | Yes |
+| GET | /api/[resource]/[id] | Get one | Yes |
+| PATCH | /api/[resource]/[id] | Update | Yes |
+| DELETE | /api/[resource]/[id] | Delete | Yes |
+
+### Server Actions
+
+```typescript
+// app/actions/[resource].ts
+'use server'
+
+export async function create[Resource](data: CreateInput) {
+  // 1. Validate auth
+  // 2. Validate input
+  // 3. Create in DB
+  // 4. Revalidate cache
+  // 5. Return result
+}
+```
+
+## 📦 Features & Épics
+
+### Épic 1: Core Feature
+**Durée estimée:** X heures
+**Priorité:** P0 (Critique)
+
+**User Stories:**
+- [ ] US-1.1: En tant qu'utilisateur, je peux [action]
+- [ ] US-1.2: En tant qu'utilisateur, je peux [action]
+
+### Épic 2: Secondary Feature
+(Continue for all main features)
+
+## 📅 Roadmap MVP (3 Mois)
+
+### Sprint 1 (Semaines 1-2): Foundation
+**Objectif:** Setup complet + Core feature basic
+
+**Tickets:**
+- [ ] Setup projet + Auth
+- [ ] Database schema + migrations
+- [ ] Layout principal + navigation
+- [ ] Core feature - CRUD basique
+
+**Livrables:**
+- Authentification fonctionnelle
+- Dashboard de base
+- Premier feature opérationnelle
+
+### Sprint 2 (Semaines 3-4): Core Features
+**Objectif:** Features principales complètes
+
+**Tickets:**
+- [ ] Feature A - Complétion
+- [ ] Feature B - Implémentation
+- [ ] Intégration AI (si applicable)
+- [ ] Tests unitaires
+
+**Livrables:**
+- Features core complètes
+- Tests coverage > 60%
+
+### Sprint 3 (Semaines 5-6): Polish & Launch
+**Objectif:** Production-ready
+
+**Tickets:**
+- [ ] UI/UX polish
+- [ ] Performance optimization
+- [ ] Error handling complet
+- [ ] Documentation
+- [ ] Deployment pipeline
+
+**Livrables:**
+- MVP déployé en production
+- Documentation utilisateur
+
+## 📊 Estimations
+
+### Temps par Composant
+
+| Composant | Heures Estimées | Complexité |
+|-----------|-----------------|------------|
+| Auth & User Management | 8h | Moyenne |
+| Database & Models | 6h | Faible |
+| Core Feature | 16h | Haute |
+| UI Components | 12h | Moyenne |
+| AI Integration | 8h | Haute |
+| Testing | 8h | Moyenne |
+| Deployment | 4h | Faible |
+| **TOTAL** | **~62h** | - |
+
+### Risques Identifiés
+
+| Risque | Probabilité | Impact | Mitigation |
+|--------|-------------|--------|------------|
+| AI API rate limits | Moyenne | Haute | Implement caching + fallback |
+| Performance issues | Faible | Moyenne | Load testing early |
+| Scope creep | Haute | Haute | Strict MVP definition |
+
+## 🔒 Sécurité & Performance
+
+### Checklist Sécurité
+- [ ] Authentication sur toutes les routes protégées
+- [ ] Validation des inputs (Zod)
+- [ ] Sanitization des outputs (XSS prevention)
+- [ ] Rate limiting sur les API
+- [ ] HTTPS obligatoire
+- [ ] Secrets management (.env)
+
+### Objectifs Performance
+| Métrique | Objectif |
+|----------|----------|
+| LCP | < 2.5s |
+| FID | < 100ms |
+| CLS | < 0.1 |
+| TTFB | < 600ms |
+| API Response | < 200ms |
+
+## 📝 Checklist Architecture
+
+Generate exactly 9 checklist items:
+
+- [ ] **Finaliser le schéma de base de données** - Créer toutes les tables, relations et indexes | Temps estimé: 4h | Requis: true
+- [ ] **Documenter l'architecture système** - Diagrammes et documentation technique | Temps estimé: 3h | Requis: true
+- [ ] **Définir les Server Actions** - Créer les actions pour les opérations CRUD principales | Temps estimé: 4h | Requis: true
+- [ ] **Planifier les sprints** - Découper le travail en tickets granulaires | Temps estimé: 2h | Requis: true
+- [ ] **Configurer la CI/CD** - Pipeline de tests et déploiement automatique | Temps estimé: 3h | Requis: false
+- [ ] **Créer les composants UI de base** - Design system et composants réutilisables | Temps estimé: 6h | Requis: true
+- [ ] **Implémenter la validation Zod** - Schémas de validation pour toutes les entrées | Temps estimé: 2h | Requis: true
+- [ ] **Configurer le monitoring** - Logs, error tracking, analytics | Temps estimé: 2h | Requis: false
+- [ ] **Rédiger le premier prompt Cursor** - Prompt optimisé pour démarrer le développement | Temps estimé: 1h | Requis: true
+
+## 🚀 Premier Prompt Cursor
+
+```markdown
+# Premier Prompt pour Démarrer le Développement
+
+Contexte: Tu travailles sur {{project_name}}, {{description}}.
+
+Stack: [Stack from preferences]
+
+Tâche: Implémente [first feature] en suivant ces étapes:
+
+1. Crée le schéma Prisma pour [model]
+2. Génère la migration
+3. Crée la Server Action [action_name]
+4. Crée le composant UI [component_name]
+5. Ajoute la validation Zod
+
+Contraintes:
+- TypeScript strict
+- Gestion d'erreurs complète
+- Pas de TODO comments
+- Tests unitaires inclus
+
+Commence par l'étape 1.
+```
+
+# REQUIREMENTS
+
+- Be specific to THIS project's requirements
+- Provide realistic time estimates
+- All content must be in French
+- Checklist must have exactly 9 items with proper formatting
+- Include actual Mermaid diagrams, not placeholders
+- Make roadmap actionable with specific tasks
+
+Now generate the Phase 3 Architecture & Planning report for {{project_name}}.
+

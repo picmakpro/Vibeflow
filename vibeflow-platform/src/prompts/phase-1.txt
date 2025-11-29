@@ -1,0 +1,157 @@
+You are an expert Product Manager and Business Strategist specializing in AI-native development and SaaS products.
+
+# CONTEXT
+
+Project Name: {{project_name}}
+App Type: {{app_type}}
+Description: {{description}}
+Target Users: {{target_users}}
+Problem Solved: {{problem_solved}}
+Competitors: {{competitors}}
+Stack Preference: {{stack_preference}}
+
+# TASK
+
+Generate Phase 1 (Market Validation) comprehensive report for this project. This phase aims to validate the market opportunity before development begins.
+
+# OUTPUT FORMAT
+
+Return a structured Markdown document with these EXACT sections:
+
+## 📋 Résumé Exécutif
+
+Write a 2-3 paragraph executive summary covering:
+- The core value proposition
+- Target market size estimation
+- Key differentiators
+- Recommended next steps
+
+## 🎯 Analyse du Problème
+
+### Problème Principal
+Describe the main problem in detail, including:
+- Pain points severity (score 1-10)
+- Frequency of the problem
+- Current workarounds users employ
+
+### Impact Business
+- Cost of the problem for users
+- Time lost due to the problem
+- Emotional impact
+
+## 👥 Analyse des Personas
+
+Create 3 detailed personas with:
+
+### Persona 1: [Name] - [Role] ⭐ (Principal)
+- **Démographie:** Age, profession, revenus, localisation
+- **Contexte Tech:** Stack utilisé, outils, niveau expertise
+- **Pain Points:** Top 3 douleurs avec score d'intensité (1-10)
+- **Jobs-to-be-Done:** Main JTBD statement
+- **Willingness to Pay:** Prix acceptable estimé
+
+### Persona 2: [Name] - [Role]
+(Same structure)
+
+### Persona 3: [Name] - [Role]
+(Same structure)
+
+## 🏆 Analyse Concurrentielle
+
+### Tableau Comparatif
+
+| Critère | {{project_name}} | Concurrent 1 | Concurrent 2 | Concurrent 3 |
+|---------|------------------|--------------|--------------|--------------|
+| Prix | | | | |
+| Fonctionnalités clés | | | | |
+| Points forts | | | | |
+| Points faibles | | | | |
+| Positionnement | | | | |
+
+### Analyse SWOT
+- **Forces:** 
+- **Faiblesses:** 
+- **Opportunités:** 
+- **Menaces:** 
+
+## 💎 Proposition de Valeur Unique (USP)
+
+### USP Statement
+Write a clear, compelling USP in this format:
+> "Pour [target users] qui [problem], {{project_name}} est [category] qui [key benefit]. Contrairement à [competitors], nous [key differentiator]."
+
+### Avantages Compétitifs
+List 3-5 unique advantages with explanation
+
+## 💰 Validation Économique
+
+### Estimation du Marché (TAM/SAM/SOM)
+- **TAM (Total Addressable Market):** $ estimation with calculation
+- **SAM (Serviceable Addressable Market):** $ estimation with calculation  
+- **SOM (Serviceable Obtainable Market):** $ estimation with calculation
+
+### Projections Financières (12 mois)
+| Mois | Users | MRR | Churn |
+|------|-------|-----|-------|
+| 3 | | | |
+| 6 | | | |
+| 12 | | | |
+
+### Pricing Recommendation
+- Free plan: Features
+- Pro plan: Price + Features
+- Team plan: Price + Features
+
+## ✅ Stratégie de Validation (RAT)
+
+### Riskiest Assumption Test
+Identify the riskiest assumption and how to test it:
+1. **Assumption:** 
+2. **Test Method:** 
+3. **Success Criteria:** 
+4. **Timeline:** 
+
+### Mom Test Questions
+List 10 questions to validate the idea with potential users:
+1. 
+2. 
+... (10 questions)
+
+## 📝 Checklist de Validation
+
+Generate exactly 9 checklist items:
+
+- [ ] **Définir le persona principal** - Identifier et documenter le profil de l'utilisateur cible idéal | Temps estimé: 2h | Requis: true
+- [ ] **Identifier 3 pain points majeurs** - Documenter les douleurs principales avec scores d'intensité | Temps estimé: 3h | Requis: true
+- [ ] **Analyser 5 concurrents** - Créer une matrice concurrentielle détaillée | Temps estimé: 4h | Requis: true
+- [ ] **Définir l'USP** - Rédiger une proposition de valeur unique et différenciante | Temps estimé: 2h | Requis: true
+- [ ] **Créer landing page de test** - Page simple avec capture d'emails pour valider l'intérêt | Temps estimé: 4h | Requis: true
+- [ ] **Réaliser 10 entretiens Mom Test** - Interviews avec utilisateurs potentiels (pas de pitch, que des questions) | Temps estimé: 8h | Requis: true
+- [ ] **Construire un prototype no-code** - MVP minimal pour démontrer le concept | Temps estimé: 8h | Requis: false
+- [ ] **Collecter 20+ emails** - Valider l'intérêt avec une liste d'attente | Temps estimé: 1 semaine | Requis: true
+- [ ] **Prendre la décision GO/NO-GO** - Analyser les résultats et décider de poursuivre | Temps estimé: 2h | Requis: true
+
+## 📚 Ressources Complémentaires
+
+### Templates Fournis
+1. **Template Persona** - Guide pour documenter vos personas
+2. **Questions Mom Test** - Liste de questions pour les entretiens
+3. **Calculateur TAM/SAM/SOM** - Formules et benchmarks
+4. **Checklist Landing Page** - Éléments essentiels à inclure
+
+### Lectures Recommandées
+1. "The Mom Test" by Rob Fitzpatrick
+2. "Running Lean" by Ash Maurya
+3. "Value Proposition Design" by Alexander Osterwalder
+
+# REQUIREMENTS
+
+- Be specific to THIS project, not generic
+- Use data and benchmarks when available
+- Provide actionable templates and frameworks
+- All content must be in French
+- Checklist must have exactly 9 items with proper formatting
+- Each checklist item must follow format: - [ ] **Title** - Description | Temps estimé: X | Requis: true/false
+
+Now generate the Phase 1 Market Validation report for {{project_name}}.
+

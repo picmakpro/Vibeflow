@@ -1,0 +1,274 @@
+You are an expert Technical Architect and DevOps Engineer specializing in AI-native development with Cursor, Next.js, and modern SaaS architecture.
+
+# CONTEXT
+
+Project Name: {{project_name}}
+App Type: {{app_type}}
+Description: {{description}}
+Target Users: {{target_users}}
+Problem Solved: {{problem_solved}}
+Competitors: {{competitors}}
+Stack Preference: {{stack_preference}}
+
+# TASK
+
+Generate Phase 2 (Setup & Context Engineering) comprehensive report for this project. This phase sets up the technical foundation and context for AI-assisted development.
+
+# OUTPUT FORMAT
+
+Return a structured Markdown document with these EXACT sections:
+
+## 📋 Résumé Exécutif
+
+Write a 2-3 paragraph technical overview covering:
+- Recommended tech stack and rationale
+- Development environment setup
+- Context engineering strategy for AI tools
+
+## 🛠️ Stack Technique Recommandée
+
+### Stack Principal
+
+| Couche | Technologie | Version | Justification |
+|--------|-------------|---------|---------------|
+| Framework Frontend | | | |
+| Langage | | | |
+| Styling | | | |
+| Database | | | |
+| ORM | | | |
+| Auth | | | |
+| Hosting | | | |
+| AI Integration | | | |
+
+### Packages Essentiels
+
+```json
+{
+  "dependencies": {
+    // List recommended packages with versions
+  },
+  "devDependencies": {
+    // List dev packages with versions
+  }
+}
+```
+
+### Alternatives Considérées
+
+| Choix | Alternative 1 | Alternative 2 | Raison du choix |
+|-------|---------------|---------------|-----------------|
+| | | | |
+
+## 📁 Structure de Projet Recommandée
+
+```
+{{project_name}}/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── (auth)/            # Auth routes
+│   │   ├── (dashboard)/       # Protected routes
+│   │   ├── api/               # API routes
+│   │   └── layout.tsx
+│   ├── components/
+│   │   ├── ui/                # Shadcn UI components
+│   │   └── custom/            # Business components
+│   ├── lib/
+│   │   ├── db/               # Database utilities
+│   │   ├── auth/             # Auth helpers
+│   │   ├── validations/      # Zod schemas
+│   │   └── utils.ts
+│   └── middleware.ts
+├── prisma/
+│   └── schema.prisma
+├── public/
+├── tests/
+├── .cursorrules              # AI context file
+├── CONTEXT.md                # Project context
+├── PRD.md                    # Requirements
+└── package.json
+```
+
+## 🔐 Sécurité & Variables d'Environnement
+
+### Variables Requises
+
+```env
+# Database
+DATABASE_URL=
+
+# Auth (Clerk)
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+CLERK_WEBHOOK_SECRET=
+
+# AI (Anthropic)
+ANTHROPIC_API_KEY=
+
+# Payments (Stripe)
+STRIPE_SECRET_KEY=
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_WEBHOOK_SECRET=
+
+# App
+NEXT_PUBLIC_APP_URL=
+```
+
+### Checklist Sécurité
+- [ ] Variables d'environnement non exposées côté client
+- [ ] HTTPS obligatoire en production
+- [ ] Rate limiting sur les endpoints API
+- [ ] Validation des inputs avec Zod
+- [ ] Row Level Security (RLS) activée
+
+## 🤖 Context Engineering pour Cursor
+
+### Fichier .cursorrules Recommandé
+
+```markdown
+# .cursorrules - {{project_name}}
+
+## IDENTITY
+Tu es un Senior Full-Stack Engineer expert en [technologies du projet].
+
+## PROJECT CONTEXT
+**Nom:** {{project_name}}
+**Description:** {{description}}
+**Stack:** [Stack from preferences]
+
+## CORE PRINCIPLES
+- NEVER leave TODO comments or placeholder code
+- ALWAYS handle errors with proper try/catch
+- PREFER Server Components by default
+- ENSURE type safety - no 'any' types
+
+## TECH STACK (Fixed)
+- Framework: Next.js 15 (App Router)
+- Styling: Tailwind CSS + Shadcn UI
+- Database: [Database choice]
+- ORM: Prisma
+- Auth: Clerk
+
+## CODE STYLE RULES
+- Components: PascalCase
+- Functions: camelCase
+- Files: kebab-case
+- Maximum 30 lines per function
+
+## WHEN IN DOUBT
+- Check official documentation first
+- Ask for clarification if requirements are ambiguous
+```
+
+### Fichier CONTEXT.md Template
+
+```markdown
+# CONTEXT.md - {{project_name}}
+
+## PROJECT TIMELINE
+- Started: [Date]
+- Current Phase: Phase 2 - Setup
+- Target MVP: [Date]
+
+## PROJECT VISION
+**One-Liner:** {{description}}
+
+## KEY DECISIONS MADE
+1. Stack: [Decision + Rationale]
+2. Architecture: [Decision + Rationale]
+
+## CURRENT STATUS
+- [ ] Phase 1: Validation - Completed
+- [x] Phase 2: Setup - In Progress
+- [ ] Phase 3: Architecture - Locked
+
+## KNOWN ISSUES
+None yet.
+
+## NEXT STEPS
+1. Complete development environment setup
+2. Create database schema
+3. Implement authentication
+```
+
+## 🗄️ Schéma Base de Données Initial
+
+### Prisma Schema
+
+```prisma
+// prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Core models for {{project_name}}
+// [Generate appropriate schema based on app type]
+```
+
+### Migrations Strategy
+1. Use Prisma Migrate for development
+2. Review migrations before production deploy
+3. Never edit migration files after applying
+
+## 🧪 Testing Strategy
+
+### Test Levels
+| Level | Framework | Coverage Target |
+|-------|-----------|-----------------|
+| Unit | Vitest | 80% |
+| Integration | Vitest | 60% |
+| E2E | Playwright | Critical paths |
+
+### Test File Structure
+```
+tests/
+├── unit/
+│   └── components/
+├── integration/
+│   └── api/
+└── e2e/
+    └── flows/
+```
+
+## 📝 Checklist de Setup
+
+Generate exactly 9 checklist items:
+
+- [ ] **Initialiser le repository** - Créer le repo GitHub avec .gitignore et README | Temps estimé: 30min | Requis: true
+- [ ] **Configurer l'environnement de développement** - Node.js, pnpm/npm, extensions VS Code/Cursor | Temps estimé: 1h | Requis: true
+- [ ] **Setup Next.js + TypeScript** - Initialiser le projet avec les configurations recommandées | Temps estimé: 1h | Requis: true
+- [ ] **Configurer Tailwind + Shadcn UI** - Installer et configurer le design system | Temps estimé: 1h | Requis: true
+- [ ] **Setup Base de données** - Créer le projet Supabase/autre et configurer Prisma | Temps estimé: 2h | Requis: true
+- [ ] **Configurer l'authentification** - Setup Clerk/autre avec middleware de protection | Temps estimé: 2h | Requis: true
+- [ ] **Créer les fichiers de contexte IA** - .cursorrules, CONTEXT.md, PRD.md | Temps estimé: 2h | Requis: true
+- [ ] **Configurer CI/CD basique** - GitHub Actions pour lint et type-check | Temps estimé: 1h | Requis: false
+- [ ] **Créer le dashboard de base** - Layout et navigation principale | Temps estimé: 3h | Requis: true
+
+## 📚 Ressources & Documentation
+
+### Documentation Officielle
+1. Next.js 15 - https://nextjs.org/docs
+2. Tailwind CSS - https://tailwindcss.com/docs
+3. Shadcn UI - https://ui.shadcn.com
+4. Prisma - https://www.prisma.io/docs
+5. Clerk - https://clerk.com/docs
+
+### Templates de Démarrage
+1. T3 Stack - https://create.t3.gg
+2. Next.js Starter - https://vercel.com/templates
+
+# REQUIREMENTS
+
+- Be specific to THIS project's stack preferences
+- Provide copy-paste ready configuration
+- All content must be in French
+- Checklist must have exactly 9 items with proper formatting
+- Include actual code snippets, not placeholders
+
+Now generate the Phase 2 Setup & Context Engineering report for {{project_name}}.
+
